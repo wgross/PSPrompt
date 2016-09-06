@@ -6,19 +6,7 @@ function New-PromptItemFactory {
         [string[]]$Items
     )
     process {
-        function getItemContainersToRoot {
-            param(
-                [string]$Path
-            )
-            $parentItem = Get-Item $Path
-            while($parentItem) { 
-
-                $parentItem
-                $parentItem = (Get-Item $parentItem.FullName).Parent
-
-            }
-        }
-
+       
         $global:promptItems = @()
          
         # Add script block to array of scriptblocks to add
@@ -66,7 +54,7 @@ function New-PromptItemFactory {
 
                 "git" {
                     $global:promptItems += [scriptblock]{
-                        if((getItemContainersToRoot $PWD | ForEach-Object { Test-Path -PathType Container -Path (Join-Path $_.FullName ".git") }) -contains $true) { 
+                        if((Get-ItemContainersToRoot $PWD | ForEach-Object { Test-Path -PathType Container -Path (Join-Path $_.FullName ".git") }) -contains $true) { 
                             $currentBranch = git branch | Where-Object { $_.StartsWith("*") }
                             $currentBranch = $currentBranch.TrimStart("* ")
                             "[GIT:$currentBranch]" 
@@ -77,7 +65,7 @@ function New-PromptItemFactory {
                 
                 "hg" {
                     $global:promptItems += [scriptblock]{
-                        if((getItemContainersToRoot $PWD | ForEach-Object { 
+                        if((Get-ItemContainersToRoot $PWD | ForEach-Object { 
                             Test-Path -PathType Container -Path (Join-Path $_.FullName ".hg") 
                         }) -contains $true) { "[HG]" }
                     }
