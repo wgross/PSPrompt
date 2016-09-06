@@ -2,7 +2,7 @@
 function New-PromptItemFactory {
     param(
         [Parameter()]
-        [ValidateSet("TestAdmin","LastCommandDuration","Pwd","VisualStudio","hg","git","Powershell","Time","LastExitCode","'<line>'")]
+        [ValidateSet("TestAdmin","LastCommandDuration","Pwd","VisualStudio","hg","git","Powershell","Time","LastExitCode","LINE")]
         [string[]]$Items
     )
     process {
@@ -26,7 +26,7 @@ function New-PromptItemFactory {
         foreach($item in $Items) {
             switch($item) {
 
-                "'<line>'" {
+                "LINE" {
                     $global:promptItems += [scriptblock]{
                         "<line>"
                     }
