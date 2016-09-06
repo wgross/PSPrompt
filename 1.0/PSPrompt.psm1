@@ -46,9 +46,7 @@ function New-PromptItemFactory {
                         } else {
                             $lastTs = [timespan]::FromMilliseconds(0)
                         }
-                        if($lastCommandHistoryItem) { 
-                            "[`$?:$lastCommandResult ms:$([int]($lastTs.TotalMilliseconds))]" 
-                        }
+                        "[`$?:$lastCommandResult ms:$([int]($lastTs.TotalMilliseconds))]" 
                     }
                 }
 
