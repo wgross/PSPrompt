@@ -39,15 +39,15 @@ function New-PromptItemFactory {
                 
                 "LastCommandDuration" {
                     $global:promptItems += [scriptblock]{
-                        $last = $?
-                        $global:lastCommand = Get-History -Count 1
-                        if($lastCommand) {
-                            $lastTs = $lastCommand.EndExecutionTime.Subtract($lastCommand.StartExecutionTime)
+                        $lastCommandResult = $?
+                        $lastCommandHistoryItem = Get-History -Count 1
+                        if($lastCommandHistoryItem) {
+                            $lastTs = $lastCommandHistoryItem.EndExecutionTime.Subtract($lastCommandHistoryItem.StartExecutionTime)
                         } else {
                             $lastTs = [timespan]::FromMilliseconds(0)
                         }
-                        if($global:lastCommand) { 
-                            "[`$?:$last ms:$([int]($lastTs.TotalMilliseconds))]" 
+                        if($lastCommandHistoryItem) { 
+                            "[`$?:$lastCommandResult ms:$([int]($lastTs.TotalMilliseconds))]" 
                         }
                     }
                 }
