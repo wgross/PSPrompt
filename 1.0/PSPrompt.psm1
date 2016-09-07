@@ -122,7 +122,7 @@ function Format-PromptItemFactory  {
     process {
     
         $line = [string]::Join(" ",$PromptItemFactory.InvokeReturnAsIs())
-        $line = $line.Replace("<line>",$('_' * [System.Math]::Max(0,($host.ui.RawUI.WindowSize.Width-($content.Length-5)))))
+        $line = $line.Replace("<line>",$('_' * [System.Math]::Max(0,($host.ui.RawUI.WindowSize.Width-($line.Length-5)))))
         $line | Write-Host -ForegroundColor DarkGray
     }
 }
