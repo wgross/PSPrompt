@@ -22,7 +22,7 @@ function New-PromptItemFactory {
 
                 "Pwd" {
                     $global:promptItems += [scriptblock]{
-                        "[$PWD]"
+                        "[$($PWD.ProviderPath)]"
                     }
                 }
                 
