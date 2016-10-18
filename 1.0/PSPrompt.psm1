@@ -54,8 +54,11 @@ function New-PromptItemFactory {
                     $global:promptItems += [scriptblock]{
                         if((Get-ItemContainersToRoot $PWD | ForEach-Object { Test-Path -PathType Container -Path (Join-Path $_.FullName ".git") }) -contains $true) { 
                             $currentBranch = git branch | Where-Object { $_.StartsWith("*") }
-                            $currentBranch = $currentBranch.TrimStart("* ")
-                            "[GIT:$currentBranch]" 
+                            if([string]::IsNullOrEmpty($currentBranch)) {
+                                "[GIT]"
+                            } else {
+                                "[GIT:$($currentBranch.TrimStart("* "))]"
+                            }
                         }
                     }
                 }
