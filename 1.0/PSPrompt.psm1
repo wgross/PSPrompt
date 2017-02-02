@@ -22,7 +22,7 @@ function New-PromptItemFactory {
 
                 "Pwd" {
                     $global:promptItems += [scriptblock]{
-                        "[$($PWD.ProviderPath)]"
+                        "[$($PWD.Path)]"
                     }
                 }
                 
@@ -59,7 +59,6 @@ function New-PromptItemFactory {
                         }
                     }
                 }
-
                 
                 "hg" {
                     $global:promptItems += [scriptblock]{
