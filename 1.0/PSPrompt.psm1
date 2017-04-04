@@ -1,3 +1,18 @@
+function script:gitExe {
+    <#
+    .SYNOPSIS
+        Retrieves the path to the dot net core cli.
+        The value is cached.
+    #>
+    if($script:gitExePath) {
+        return $script:gitExePath
+    }            
+    return ($script:gitExePath = (Get-Command -Name git.exe -ErrorAction SilentlyContinue).Path)
+}
+
+if(gitExe) {
+    "Found git.exe at $(gitExe)" | Write-Host -ForegroundColor Green
+}
 
 function New-PromptItemFactory {
     param(
@@ -52,10 +67,16 @@ function New-PromptItemFactory {
 
                 "git" {
                     $global:promptItems += [scriptblock]{
-                        if((Get-ItemContainersToRoot $PWD | ForEach-Object { Test-Path -PathType Container -Path (Join-Path $_.FullName ".git") }) -contains $true) { 
-                            $currentBranch = git branch | Where-Object { $_.StartsWith("*") }
-                            $currentBranch = $currentBranch.TrimStart("* ")
-                            "[GIT:$currentBranch]" 
+                        if(gitExe) {
+                            if((Get-ItemContainersToRoot -Path $PWD | ForEach-Object -Process { Test-Path -PathType Container -Path (Join-Path -Path $_.FullName -ChildPath ".git") }) -contains $true) { 
+                                $currentBranch = & (gitExe) branch | Where-Object -FilterScript { $_.StartsWith("*") }
+                                if(!$currentBranch) {
+                                    "[GIT:]" | Write-Output
+                                } else {
+                                    $currentBranch = $currentBranch.TrimStart("* ")
+                                    "[GIT:$currentBranch]" | Write-Output
+                                }
+                            }
                         }
                     }
                 }
@@ -70,7 +91,7 @@ function New-PromptItemFactory {
 
                 "VisualStudio" {
                     $global:promptItems += [scriptblock]{
-                        if((Test-Path *.sln) -or (Test-Path *.csproj) -or (Test-Path *.proj)) { "[VS]" }
+                        if((Test-Path -Path *.sln) -or (Test-Path -Path *.csproj) -or (Test-Path -Path *.proj)) { "[VS]" }
                     }
                 }
 
