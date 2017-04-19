@@ -1,4 +1,4 @@
-function script:gitExe {
+function gitExe {
     <#
     .SYNOPSIS
         Retrieves the path to the dot net core cli.
@@ -146,3 +146,5 @@ function Format-PromptItemFactory  {
         $line | Write-Host -ForegroundColor DarkGray
     }
 }
+
+Export-ModuleMember -Function "*-*"
