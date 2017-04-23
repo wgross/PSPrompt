@@ -1,4 +1,4 @@
-function script:gitExe {
+function gitExe {
     <#
     .SYNOPSIS
         Retrieves the path to the dot net core cli.
@@ -11,7 +11,7 @@ function script:gitExe {
 }
 
 if(gitExe) {
-    "Found git.exe at $(gitExe)" | Write-Host -ForegroundColor Green
+    "PSPrompt: Found git.exe at '$(gitExe)'" | Write-Host -ForegroundColor Green
 }
 
 function New-PromptItemFactory {
@@ -146,3 +146,5 @@ function Format-PromptItemFactory  {
         $line | Write-Host -ForegroundColor DarkGray
     }
 }
+
+Export-ModuleMember -Function "*-*"
